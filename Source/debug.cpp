@@ -586,7 +586,7 @@ std::string DebugCmdLevelSeed(const string_view parameter)
 
 std::string DebugCmdSpawnUniqueMonster(const string_view parameter)
 {
-	if (currlevel == 0)
+	if (leveltype == DTYPE_TOWN)
 		return "Do you want to kill the towners?!?";
 
 	std::stringstream paramsStream(parameter.data());
@@ -673,7 +673,7 @@ std::string DebugCmdSpawnUniqueMonster(const string_view parameter)
 
 std::string DebugCmdSpawnMonster(const string_view parameter)
 {
-	if (currlevel == 0)
+	if (leveltype == DTYPE_TOWN)
 		return "Do you want to kill the towners?!?";
 
 	std::stringstream paramsStream(parameter.data());

@@ -1190,7 +1190,7 @@ void AddBerserk(Missile &missile, const AddMissileParameter &parameter)
 		monster.mMaxDamage = (GenerateRnd(10) + 120) * monster.mMaxDamage / 100 + slvl;
 		monster.mMinDamage2 = (GenerateRnd(10) + 120) * monster.mMinDamage2 / 100 + slvl;
 		monster.mMaxDamage2 = (GenerateRnd(10) + 120) * monster.mMaxDamage2 / 100 + slvl;
-		int lightRadius = (currlevel < 17 || currlevel > 20) ? 3 : 9;
+		int lightRadius = leveltype == DTYPE_NEST ? 9 : 3;
 		monster.mlid = AddLight(monster.position.tile, lightRadius);
 		UseMana(missile._misource, SPL_BERSERK);
 	}
@@ -1853,7 +1853,7 @@ void AddWeapexp(Missile &missile, const AddMissileParameter &parameter)
 
 void AddTown(Missile &missile, const AddMissileParameter &parameter)
 {
-	if (currlevel == 0) {
+	if (leveltype == DTYPE_TOWN) {
 		missile.position.tile = parameter.dst;
 		missile.position.start = parameter.dst;
 	} else {
@@ -1896,7 +1896,7 @@ void AddTown(Missile &missile, const AddMissileParameter &parameter)
 			other._mirange = 0;
 	}
 	PutMissile(missile);
-	if (missile._misource == MyPlayerId && !missile._miDelFlag && currlevel != 0) {
+	if (missile._misource == MyPlayerId && !missile._miDelFlag && leveltype != DTYPE_TOWN) {
 		if (!setlevel) {
 			NetSendCmdLocParam3(true, CMD_ACTIVATEPORTAL, missile.position.tile, currlevel, leveltype, 0);
 		} else {
@@ -3197,7 +3197,7 @@ void MI_Town(Missile &missile)
 		missile._mirange--;
 	if (missile._mirange == missile.var1)
 		SetMissDir(missile, 1);
-	if (currlevel != 0 && missile._mimfnum != 1 && missile._mirange != 0) {
+	if (leveltype != DTYPE_TOWN && missile._mimfnum != 1 && missile._mirange != 0) {
 		if (missile.var2 == 0)
 			missile._mlid = AddLight(missile.position.tile, 1);
 		ChangeLight(missile._mlid, missile.position.tile, expLight[missile.var2]);
@@ -3975,7 +3975,7 @@ void MI_Rportal(Missile &missile)
 	if (missile._mirange == missile.var1)
 		SetMissDir(missile, 1);
 
-	if (currlevel != 0 && missile._mimfnum != 1 && missile._mirange != 0) {
+	if (leveltype != DTYPE_TOWN && missile._mimfnum != 1 && missile._mirange != 0) {
 		if (missile.var2 == 0)
 			missile._mlid = AddLight(missile.position.tile, 1);
 		ChangeLight(missile._mlid, missile.position.tile, expLight[missile.var2]);

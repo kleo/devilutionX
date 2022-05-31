@@ -1179,31 +1179,36 @@ void CreateLevel(lvl_entry lvldir)
 		InitTownTriggers();
 		break;
 	case DTYPE_CATHEDRAL:
-	case DTYPE_CRYPT:
 		CreateL5Dungeon(glSeedTbl[currlevel], lvldir);
 		InitL1Triggers();
-		Freeupstairs();
 		break;
 	case DTYPE_CATACOMBS:
 		CreateL2Dungeon(glSeedTbl[currlevel], lvldir);
 		InitL2Triggers();
-		Freeupstairs();
 		break;
 	case DTYPE_CAVES:
-	case DTYPE_NEST:
 		CreateL3Dungeon(glSeedTbl[currlevel], lvldir);
 		InitL3Triggers();
-		Freeupstairs();
 		break;
 	case DTYPE_HELL:
 		CreateL4Dungeon(glSeedTbl[currlevel], lvldir);
 		InitL4Triggers();
-		Freeupstairs();
+		break;
+	case DTYPE_NEST:
+		CreateL3Dungeon(glSeedTbl[currlevel], lvldir);
+		InitHiveTriggers();
+		break;
+	case DTYPE_CRYPT:
+		CreateL5Dungeon(glSeedTbl[currlevel], lvldir);
+		InitCryptTriggers();
 		break;
 	default:
 		app_fatal("CreateLevel");
 	}
 
+	if (leveltype != DTYPE_TOWN) {
+		Freeupstairs();
+	}
 	LoadRndLvlPal(leveltype);
 }
 
@@ -2313,7 +2318,7 @@ void LoadGameLevel(bool firstflag, lvl_entry lvldir)
 		ProcessVisionList();
 	}
 
-	if (currlevel >= 21) {
+	if (leveltype == DTYPE_CRYPT) {
 		if (currlevel == 21) {
 			CornerstoneLoad(CornerStone.position);
 		}
