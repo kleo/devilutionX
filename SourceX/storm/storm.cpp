@@ -194,13 +194,14 @@ BOOL SFileOpenFile(const char *filename, HANDLE *phFile)
 {
 	bool result = false;
 
-	if (directFileAccess) {
+	if (directFileAccess || true) {
 		char directPath[MAX_PATH] = "\0";
 		char tmpPath[MAX_PATH] = "\0";
 		for (size_t i = 0; i < strlen(filename); i++) {
 			tmpPath[i] = AsciiToLowerTable_Path[static_cast<unsigned char>(filename[i])];
 		}
 		snprintf(directPath, MAX_PATH, "%s%s", SBasePath, tmpPath);
+		SDL_Log(directPath);
 		result = SFileOpenFileEx((HANDLE)0, directPath, 0xFFFFFFFF, phFile);
 	}
 	if (!result && patch_rt_mpq) {
